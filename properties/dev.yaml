@@ -1,0 +1,7 @@
+# DEV
+
+# App
+server.port: 8010
+
+# MariaDB
+mariadb: free_fair:free_fair_pdw@tcp(localhost:3306)/free_fair_adm

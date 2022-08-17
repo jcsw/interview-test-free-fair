@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+  free_fair-mariadb:
+    image: "mariadb:10.4-bionic"
+    ports :
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: free_fair_pdw
+      MYSQL_DATABASE: free_fair_adm
+      MYSQL_USER: free_fair
+      MYSQL_PASSWORD: free_fair_pdw
+    volumes:
+      - ~/.free_fair-mariadb:/var/lib/mysql
+    restart: on-failure
