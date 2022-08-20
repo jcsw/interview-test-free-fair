@@ -1,0 +1,283 @@
+{
+	"info": {
+		"_postman_id": "0c777104-1180-4e03-8846-7a22f915c7a8",
+		"name": "Free Fair API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Fair",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"long\": \"-46574716\",\n        \"lat\": \"-23584852\",\n        \"setcens\": \"355030893000035\",\n        \"are_ap\": \"3550308005042\",\n        \"district_code\": \"95\",\n        \"district_name\": \"JARAGUA\",\n        \"sub_pref_code\": \"29\",\n        \"sub_pref_name\": \"JARAGUA\",\n        \"region_05\": \"Norte\",\n        \"region_08\": \"Norte 1\",\n        \"fair_name\": \"JARAGUA\",\n        \"fair_code\": \"1000-1\",\n        \"addres_street\": \"RUA JOSE DOS REIS\",\n        \"address_number\": \"909.000000\",\n        \"address_district\": \"VL ZELINA\",\n        \"address_reference\": \"RUA OLIVEIRA GOUVEIA\"\n    }"
+				},
+				"url": {
+					"raw": "http://localhost:8010/v1/fairies?fair_code=4041-0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"v1",
+						"fairies"
+					],
+					"query": [
+						{
+							"key": "fair_code",
+							"value": "4041-0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Fair",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"long\": \"-46574716\",\n        \"lat\": \"-23584852\",\n        \"setcens\": \"355030893000035\",\n        \"are_ap\": \"3550308005042\",\n        \"district_code\": \"95\",\n        \"district_name\": \"JARAGUA\",\n        \"sub_pref_code\": \"29\",\n        \"sub_pref_name\": \"JARAGUA\",\n        \"region_05\": \"Leste\",\n        \"region_08\": \"Leste 1\",\n        \"fair_name\": \"JARAGUA\",\n        \"fair_code\": \"1000-1\",\n        \"addres_street\": \"RUA JOSE DOS REIS\",\n        \"address_number\": \"909.000000\",\n        \"address_district\": \"JARAGUA\",\n        \"address_reference\": \"RUA OLIVEIRA GOUVEIA\"\n    }"
+				},
+				"url": {
+					"raw": "http://localhost:8010/v1/fairies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"v1",
+						"fairies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Fair Copy",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8010/v1/fairies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"v1",
+						"fairies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Fair",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8010/v1/fairies/search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"v1",
+						"fairies",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Fair",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8010/v1/fairies?fair_code=1000-1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"v1",
+						"fairies"
+					],
+					"query": [
+						{
+							"key": "fair_code",
+							"value": "1000-1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Fair By fair_name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8010/v1/fairies/search?fair_name=JARAGUA",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"v1",
+						"fairies",
+						"search"
+					],
+					"query": [
+						{
+							"key": "fair_name",
+							"value": "JARAGUA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Fair By district_name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8010/v1/fairies/search?district_name=VILA PRUDENTE",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"v1",
+						"fairies",
+						"search"
+					],
+					"query": [
+						{
+							"key": "district_name",
+							"value": "VILA PRUDENTE"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Fair By region_05",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8010/v1/fairies/search?region_05=Leste",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"v1",
+						"fairies",
+						"search"
+					],
+					"query": [
+						{
+							"key": "region_05",
+							"value": "Leste"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Fair By address_district",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8010/v1/fairies/search?address_district=VL ZELINA",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"v1",
+						"fairies",
+						"search"
+					],
+					"query": [
+						{
+							"key": "address_district",
+							"value": "VL ZELINA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Import Data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8010/v1/import_data?file=/home/jcezar/Downloads/DEINFO_AB_FEIRASLIVRES_2014.csv",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8010",
+					"path": [
+						"v1",
+						"import_data"
+					],
+					"query": [
+						{
+							"key": "file",
+							"value": "/home/jcezar/Downloads/DEINFO_AB_FEIRASLIVRES_2014.csv"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
