@@ -16,5 +16,6 @@ addres_street VARCHAR(225),
 address_number VARCHAR(225),
 address_distric VARCHAR(225),
 address_reference VARCHAR(225),
-PRIMARY KEY (id)
+PRIMARY KEY (id),
+CONSTRAINT uniques UNIQUE (fair_code)
 );

@@ -4,14 +4,17 @@ import (
 	context "context"
 	flag "flag"
 	fmt "fmt"
-	http "net/http"
+	gohttp "net/http"
 	os "os"
 	signal "os/signal"
 	atomic "sync/atomic"
 	time "time"
 
-	mariadb "interview-test-free-fair/pkg/infra/mariadb"
+	http "interview-test-free-fair/pkg/http"
+	mariadb "interview-test-free-fair/pkg/mariadb"
 	sys "interview-test-free-fair/pkg/sys"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var healthy int32
@@ -30,33 +33,35 @@ func main() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
 
-	server := buildServer()
-
 	mariadb.Connect()
 	sys.InitMetrics()
+
+	server := buildServer()
 
 	startServer(server)
 	<-quit
 	stopServer(server)
 }
 
-func buildServer() *http.Server {
-	mux := http.NewServeMux()
+func buildServer() *gohttp.Server {
+	mux := gohttp.NewServeMux()
+	mux.Handle("/metrics", promhttp.Handler())
+	mux.HandleFunc("/ping", ping)
 
-	initRouters(mux)
+	http.BuildHandlers(mux)
 
-	return &http.Server{
+	return &gohttp.Server{
 		Addr:         fmt.Sprintf(":%d", serverPort),
-		Handler:      tracing()(mux),
+		Handler:      http.Tracing()(mux),
 		ReadTimeout:  1 * time.Second,
 		WriteTimeout: 2 * time.Second,
 		IdleTimeout:  10 * time.Second,
 	}
 }
 
-func startServer(server *http.Server) {
+func startServer(server *gohttp.Server) {
 	go func() {
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := server.ListenAndServe(); err != nil && err != gohttp.ErrServerClosed {
 			sys.LogFatal("[Could not listen on port %d] err:%v", serverPort, err)
 		}
 	}()
@@ -65,7 +70,7 @@ func startServer(server *http.Server) {
 	sys.LogInfo("[Server is ready to handle requests at port %d]", serverPort)
 }
 
-func stopServer(server *http.Server) {
+func stopServer(server *gohttp.Server) {
 	sys.LogInfo("[Server shutting down]")
 
 	atomic.StoreInt32(&healthy, 0)
@@ -83,11 +88,11 @@ func stopServer(server *http.Server) {
 	sys.LogInfo("[Server shutdown complete]")
 }
 
-func ping(w http.ResponseWriter, r *http.Request) {
+func ping(w gohttp.ResponseWriter, r *gohttp.Request) {
 	if atomic.LoadInt32(&healthy) == 1 {
-		sys.HTTPResponseWithJSON(w, http.StatusOK, "pong")
+		sys.HTTPResponseWithJSON(w, gohttp.StatusOK, "pong")
 		return
 	}
 
-	sys.HTTPResponseWithCode(w, http.StatusServiceUnavailable)
+	sys.HTTPResponseWithCode(w, gohttp.StatusServiceUnavailable)
 }

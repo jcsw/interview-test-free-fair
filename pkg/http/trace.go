@@ -1,11 +1,12 @@
-package main
+package http
 
 import (
 	context "context"
-	sys "interview-test-free-fair/pkg/sys"
 	http "net/http"
 	"strconv"
 	time "time"
+
+	sys "interview-test-free-fair/pkg/sys"
 
 	uuid "github.com/google/uuid"
 )
@@ -19,7 +20,7 @@ func wrapResponseWriter(w http.ResponseWriter) *loggingResponseWriter {
 	return &loggingResponseWriter{w, http.StatusOK}
 }
 
-func tracing() func(http.Handler) http.Handler {
+func Tracing() func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()

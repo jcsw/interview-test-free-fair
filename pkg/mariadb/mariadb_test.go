@@ -1,11 +1,11 @@
-package mongodb_test
+package mariadb_test
 
 import (
 	testing "testing"
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	mariadb "interview-test-free-fair/pkg/infra/mariadb"
+	mariadb "interview-test-free-fair/pkg/mariadb"
 	sys "interview-test-free-fair/pkg/sys"
 )
 

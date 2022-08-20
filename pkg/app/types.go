@@ -1,7 +1,7 @@
-package fair
+package app
 
-type FreeFair struct {
-	ID               int    `json:"id"`
+type Fair struct {
+	ID               int64  `json:"id"`
 	Long             string `json:"long"`
 	Lat              string `json:"lat"`
 	Setcens          string `json:"setcens"`
@@ -18,4 +18,20 @@ type FreeFair struct {
 	AddressNumber    string `json:"address_number"`
 	AddressDistric   string `json:"address_district"`
 	AddressReference string `json:"address_reference"`
+}
+
+type FairSearchParameter struct {
+	FairName       string
+	DistrictName   string
+	Region05       string
+	AddressDistric string
+}
+
+type FairService interface {
+	Fair(code string) (*Fair, error)
+	Fairs(parameters FairSearchParameter) ([]Fair, error)
+	CreateFair(fair *Fair) error
+	ImportFair(data []string) error
+	UpdateFair(fair *Fair) error
+	DeleteFair(code string) error
 }
