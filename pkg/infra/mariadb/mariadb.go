@@ -8,7 +8,7 @@ import (
 	// Mariadb Driver
 	_ "github.com/go-sql-driver/mysql"
 
-	sys "interview-test-free-fair/pkg/infra/system"
+	sys "interview-test-free-fair/pkg/sys"
 )
 
 var (
@@ -36,7 +36,7 @@ func RetrieveClient() *sql.DB {
 func Disconnect() {
 	if db != nil {
 		db.Close()
-		sys.Info("[Mariadb session closed]")
+		sys.LogInfo("[Mariadb session closed]")
 	}
 }
 
@@ -45,17 +45,17 @@ func createClient() *sql.DB {
 	db, err := sql.Open("mysql", sys.Properties.Mariadb)
 
 	if err != nil {
-		sys.Error("[Could not create Mariadb client] err:%+v", err)
+		sys.LogError("[Could not create Mariadb client] err:%+v", err)
 		return nil
 	}
 
 	if err := db.Ping(); err != nil {
 		setStatusDown()
-		sys.Warn("[Could create a Mariadb session] err:%+v", err)
+		sys.LogWarn("[Could create a Mariadb session] err:%+v", err)
 	} else {
 		var version string
 		db.QueryRow("SELECT VERSION()").Scan(&version)
-		sys.Info("[Mariadb connected with version: %s]", version)
+		sys.LogInfo("[Mariadb connected with version: %s]", version)
 		setStatusUp()
 	}
 
@@ -69,10 +69,10 @@ func monitor() {
 
 		if db == nil || db.Ping() != nil {
 			setStatusDown()
-			sys.Warn("[Mariadb session is not active, trying to reconnect]")
+			sys.LogWarn("[Mariadb session is not active, trying to reconnect]")
 		} else {
 			setStatusUp()
-			sys.Info("[Mariadb session it's alive]")
+			sys.LogInfo("[Mariadb session it's alive]")
 		}
 	}
 }

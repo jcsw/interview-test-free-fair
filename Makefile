@@ -44,7 +44,7 @@ run:
 	$(GO_RUN) $(APP_INIT) -env=dev
 
 deps-start:
-	docker-compose -f docker/mariadb/docker-compose.yml up -d --remove-orphans
+	docker-compose -f docker/mariadb/docker-compose.yml up --remove-orphans
 
 deps-stop:
 	docker-compose -f docker/mariadb/docker-compose.yml stop

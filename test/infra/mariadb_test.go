@@ -5,8 +5,8 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	"interview-test-free-fair/pkg/infra/mariadb"
-	sys "interview-test-free-fair/pkg/infra/system"
+	mariadb "interview-test-free-fair/pkg/infra/mariadb"
+	sys "interview-test-free-fair/pkg/sys"
 )
 
 func TestSpec(t *testing.T) {

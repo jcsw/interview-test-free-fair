@@ -1,4 +1,4 @@
-package system
+package sys
 
 import (
 	ioutil "io/ioutil"
@@ -18,18 +18,18 @@ var Properties AppProperties
 
 // LoadProperties load properties in by environment
 func LoadProperties(env string) {
-	Info("[Loading properties by env %s]", env)
+	LogInfo("[Loading properties by env %s]", env)
 
 	pwd, _ := os.Getwd()
 	file, err := ioutil.ReadFile(pwd + "/properties/" + env + ".yaml")
 	if err != nil {
-		Fatal("[Could not load file of properties] err:%v", err)
+		LogFatal("[Could not load file of properties] err:%v", err)
 	}
 
 	err = yaml.Unmarshal(file, &Properties)
 	if err != nil {
-		Fatal("[Could not load properties values] err:%v", err)
+		LogFatal("[Could not load properties values] err:%v", err)
 	}
 
-	Info("[Properties loaded with successful]")
+	LogInfo("[Properties loaded with successful]")
 }

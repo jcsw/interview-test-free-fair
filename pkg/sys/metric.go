@@ -1,4 +1,4 @@
-package main
+package sys
 
 import (
 	"github.com/prometheus/client_golang/prometheus"
@@ -9,7 +9,7 @@ var (
 	httpRequestCountMetric    = createHttpRequestCountMetric()
 )
 
-func initMetrics() {
+func InitMetrics() {
 	prometheus.Register(httpRequestDurationMetric)
 	prometheus.Register(httpRequestCountMetric)
 }
@@ -31,7 +31,7 @@ func createHttpRequestCountMetric() *prometheus.CounterVec {
 	}, []string{"uri", "method", "code"})
 }
 
-func httpRequestMetric(uri string, method string, status string, duration float64) {
+func HttpRequestMetric(uri string, method string, status string, duration float64) {
 	httpRequestDurationMetric.WithLabelValues(uri, method, status).Observe(duration)
 	httpRequestCountMetric.WithLabelValues(uri, method, status).Add(1)
 }

@@ -11,5 +11,5 @@ services:
       MYSQL_USER: free_fair
       MYSQL_PASSWORD: free_fair_pdw
     volumes:
-      - ~/.free_fair-mariadb:/var/lib/mysql
+      - ./dump:/docker-entrypoint-initdb.d
     restart: on-failure

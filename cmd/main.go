@@ -11,7 +11,7 @@ import (
 	time "time"
 
 	mariadb "interview-test-free-fair/pkg/infra/mariadb"
-	sys "interview-test-free-fair/pkg/infra/system"
+	sys "interview-test-free-fair/pkg/sys"
 )
 
 var healthy int32
@@ -19,7 +19,7 @@ var env string
 var serverPort int
 
 func main() {
-	sys.Info("[Server initializing]")
+	sys.LogInfo("[Server initializing]")
 
 	flag.StringVar(&env, "env", "prod", "Environment")
 	flag.Parse()
@@ -33,7 +33,7 @@ func main() {
 	server := buildServer()
 
 	mariadb.Connect()
-	initMetrics()
+	sys.InitMetrics()
 
 	startServer(server)
 	<-quit
@@ -43,7 +43,7 @@ func main() {
 func buildServer() *http.Server {
 	mux := http.NewServeMux()
 
-	handleRouters(mux)
+	initRouters(mux)
 
 	return &http.Server{
 		Addr:         fmt.Sprintf(":%d", serverPort),
@@ -57,16 +57,16 @@ func buildServer() *http.Server {
 func startServer(server *http.Server) {
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			sys.Fatal("[Could not listen on port %d] err:%v", serverPort, err)
+			sys.LogFatal("[Could not listen on port %d] err:%v", serverPort, err)
 		}
 	}()
 
 	atomic.StoreInt32(&healthy, 1)
-	sys.Info("[Server is ready to handle requests at port %d]", serverPort)
+	sys.LogInfo("[Server is ready to handle requests at port %d]", serverPort)
 }
 
 func stopServer(server *http.Server) {
-	sys.Info("[Server shutting down]")
+	sys.LogInfo("[Server shutting down]")
 
 	atomic.StoreInt32(&healthy, 0)
 
@@ -77,8 +77,17 @@ func stopServer(server *http.Server) {
 	}()
 
 	if err := server.Shutdown(ctx); err != nil {
-		sys.Fatal("[Could not gracefully shutdown the server] err:%v", err)
+		sys.LogFatal("[Could not gracefully shutdown the server] err:%v", err)
 	}
 
-	sys.Info("[Server shutdown complete]")
+	sys.LogInfo("[Server shutdown complete]")
+}
+
+func ping(w http.ResponseWriter, r *http.Request) {
+	if atomic.LoadInt32(&healthy) == 1 {
+		sys.HTTPResponseWithJSON(w, http.StatusOK, "pong")
+		return
+	}
+
+	sys.HTTPResponseWithCode(w, http.StatusServiceUnavailable)
 }

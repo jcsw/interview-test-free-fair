@@ -50,3 +50,15 @@ Metricas (Prometheus)
 ```bash
 curl -X GET 'http://localhost:8010/metrics'
 ```
+
+Consultar feiras
+
+```bash
+curl -X GET 'http://localhost:8010/v1/fairies'
+```
+
+Importar dados de feiras
+
+```bash
+curl -X POST 'http://localhost:8010/v1/import_data'
+```

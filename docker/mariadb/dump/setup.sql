@@ -1,0 +1,20 @@
+CREATE TABLE free_fair(
+id INT NOT NULL AUTO_INCREMENT,
+longitude VARCHAR(225),
+latitude VARCHAR(225),
+setcens VARCHAR(225),
+areap VARCHAR(225),
+district_code VARCHAR(225),
+district_name VARCHAR(225),
+sub_pref_cod VARCHAR(225),
+sub_pref_name VARCHAR(225),
+region_05 VARCHAR(225),
+region_O8 VARCHAR(225),
+fair_name VARCHAR(225),
+fair_code VARCHAR(225),
+addres_street VARCHAR(225),
+address_number VARCHAR(225),
+address_distric VARCHAR(225),
+address_reference VARCHAR(225),
+PRIMARY KEY (id)
+);

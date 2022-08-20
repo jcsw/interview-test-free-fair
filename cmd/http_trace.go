@@ -2,7 +2,7 @@ package main
 
 import (
 	context "context"
-	sys "interview-test-free-fair/pkg/infra/system"
+	sys "interview-test-free-fair/pkg/sys"
 	http "net/http"
 	"strconv"
 	time "time"
@@ -17,11 +17,6 @@ type loggingResponseWriter struct {
 
 func wrapResponseWriter(w http.ResponseWriter) *loggingResponseWriter {
 	return &loggingResponseWriter{w, http.StatusOK}
-}
-
-func (lrw *loggingResponseWriter) WriteHeader(code int) {
-	lrw.statusCode = code
-	lrw.ResponseWriter.WriteHeader(code)
 }
 
 func tracing() func(http.Handler) http.Handler {
@@ -40,8 +35,8 @@ func tracing() func(http.Handler) http.Handler {
 			wrw := wrapResponseWriter(w)
 			next.ServeHTTP(wrw, r.WithContext(ctx))
 
-			httpRequestMetric(r.URL.Path, r.Method, strconv.Itoa(wrw.statusCode), float64(time.Since(start).Milliseconds()))
-			sys.Info("[tracing][%s][%s][%s][%d][%v]", requestID, r.Method, r.URL.Path, wrw.statusCode, time.Since(start))
+			sys.HttpRequestMetric(r.URL.Path, r.Method, strconv.Itoa(wrw.statusCode), float64(time.Since(start).Milliseconds()))
+			sys.LogInfo("[tracing][%s][%s][%s][%d][%v]", requestID, r.Method, r.URL.RequestURI(), wrw.statusCode, time.Since(start))
 		})
 	}
 }
