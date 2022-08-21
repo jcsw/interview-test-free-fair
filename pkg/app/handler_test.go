@@ -1,6 +1,7 @@
 package app_test
 
 import (
+	"bytes"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -14,12 +15,12 @@ func TestSpec(t *testing.T) {
 
 	fairHandler := &app.FairHandler{Service: &FairServiceMock{}}
 
-	Convey("Given a code of a fair", t, func() {
+	Convey("Find fair", t, func() {
 
 		res := httptest.NewRecorder()
 		handler := http.HandlerFunc(fairHandler.Find)
 
-		Convey("When find an existing code", func() {
+		Convey("When receive an existing code", func() {
 
 			req, _ := http.NewRequest("GET", "/v1/fairies?fair_code=1020", nil)
 			handler.ServeHTTP(res, req)
@@ -29,7 +30,7 @@ func TestSpec(t *testing.T) {
 			})
 		})
 
-		Convey("When find a non-existent code", func() {
+		Convey("When receive a non-existent code", func() {
 
 			req, _ := http.NewRequest("GET", "/v1/fairies?fair_code=1030", nil)
 			handler.ServeHTTP(res, req)
@@ -40,12 +41,12 @@ func TestSpec(t *testing.T) {
 		})
 	})
 
-	Convey("Given a name of a fair", t, func() {
+	Convey("Search fair", t, func() {
 
 		res := httptest.NewRecorder()
 		handler := http.HandlerFunc(fairHandler.Search)
 
-		Convey("When search an existing code", func() {
+		Convey("When receive an existing code", func() {
 
 			req, _ := http.NewRequest("GET", "/v1/fairies/search?fair_name=TestFair", nil)
 			handler.ServeHTTP(res, req)
@@ -55,13 +56,84 @@ func TestSpec(t *testing.T) {
 			})
 		})
 
-		Convey("When search a non-existent code", func() {
+		Convey("When receive a non-existent code", func() {
 
 			req, _ := http.NewRequest("GET", "/v1/fairies/search?fair_name=Other", nil)
 			handler.ServeHTTP(res, req)
 
 			Convey("Then return status code 200", func() {
 				So(res.Code, ShouldEqual, http.StatusOK)
+			})
+		})
+	})
+
+	Convey("Create new fair", t, func() {
+
+		res := httptest.NewRecorder()
+		handler := http.HandlerFunc(fairHandler.Create)
+
+		Convey("When receive POST", func() {
+
+			body := []byte(`{"fair_code":"1040", "fair_name":"TestNew"}`)
+			req, _ := http.NewRequest("POST", "/v1/fairies", bytes.NewBuffer(body))
+			handler.ServeHTTP(res, req)
+
+			Convey("Then return status code 201", func() {
+				So(res.Code, ShouldEqual, http.StatusCreated)
+			})
+		})
+	})
+
+	Convey("Update fair", t, func() {
+
+		res := httptest.NewRecorder()
+		handler := http.HandlerFunc(fairHandler.Update)
+
+		Convey("When receive a PUT an existing fair", func() {
+
+			body := []byte(`{"fair_code":"1020", "fair_name":"TestUpdate"}`)
+			req, _ := http.NewRequest("PUT", "/v1/fairies?fair_code=1020", bytes.NewBuffer(body))
+			handler.ServeHTTP(res, req)
+
+			Convey("Then return status code 200", func() {
+				So(res.Code, ShouldEqual, http.StatusOK)
+			})
+		})
+
+		Convey("When receive a PUT a non-existing fair", func() {
+
+			body := []byte(`{"fair_code":"1060", "fair_name":"TestUpdate"}`)
+			req, _ := http.NewRequest("PUT", "/v1/fairies?fair_code=1060", bytes.NewBuffer(body))
+			handler.ServeHTTP(res, req)
+
+			Convey("Then return status code 400", func() {
+				So(res.Code, ShouldEqual, http.StatusBadRequest)
+			})
+		})
+	})
+
+	Convey("Delete fair", t, func() {
+
+		res := httptest.NewRecorder()
+		handler := http.HandlerFunc(fairHandler.Delete)
+
+		Convey("When receive a DELETE an existing fair", func() {
+
+			req, _ := http.NewRequest("DELETE", "/v1/fairies?fair_code=1020", nil)
+			handler.ServeHTTP(res, req)
+
+			Convey("Then return status code 200", func() {
+				So(res.Code, ShouldEqual, http.StatusOK)
+			})
+		})
+
+		Convey("When receive a DELETE a non-existing fair", func() {
+
+			req, _ := http.NewRequest("DELETE", "/v1/fairies?fair_code=1060", nil)
+			handler.ServeHTTP(res, req)
+
+			Convey("Then return status code 400", func() {
+				So(res.Code, ShouldEqual, http.StatusBadRequest)
 			})
 		})
 	})

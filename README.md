@@ -31,6 +31,10 @@ make test
 make itest
 ```
 
+### Cobertura de teste
+
+Os arquivos de cobertura teste são gerados na pasta ./build 
+
 ## Rodando o serviço
 
 ```bash
@@ -50,3 +54,12 @@ curl -X GET 'http://localhost:8010/ping'
 ```bash
 curl -X GET 'http://localhost:8010/metrics'
 ```
+
+### Logs
+
+Os arquivos de logs são gerados na pasta ./logs no formato YYYY-MM-DD.log
+
+### Documentação dos serviços
+
+Na pasta ./docs há estão os arquivos de documentação do serviço e postman
+
