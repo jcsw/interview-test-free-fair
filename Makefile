@@ -16,7 +16,7 @@ APP_INIT=./cmd/.
 SRC=$(shell find . -type f -name '*.go' -not -path "./vendor/*")
 PKG=$(shell go list ./... | grep -v /vendor/)
 
-all: clean fmt vet test build
+all: clean fmt vet build test 
 
 build:
 	mkdir -p $(BUILD_DIRECTORY)
