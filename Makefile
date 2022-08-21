@@ -25,10 +25,12 @@ build:
 test:
 	$(GO_TEST) -v -short ./... -covermode=count -coverprofile=$(BUILD_DIRECTORY)/cover.out
 	$(GO_COVER) -html=$(BUILD_DIRECTORY)/cover.out -o $(BUILD_DIRECTORY)/coverage.html
+	xdg-open $(BUILD_DIRECTORY)/coverage.html &
 
 itest:
 	$(GO_TEST) -v ./... -covermode=count -coverprofile=$(BUILD_DIRECTORY)/icover.out
 	$(GO_COVER) -html=$(BUILD_DIRECTORY)/icover.out -o $(BUILD_DIRECTORY)/icoverage.html
+	xdg-open $(BUILD_DIRECTORY)/icoverage.html &
 
 vet:
 	$(GO_VET) $(PKG)

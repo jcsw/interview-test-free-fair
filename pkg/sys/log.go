@@ -2,8 +2,8 @@ package sys
 
 import (
 	"fmt"
-	log "log"
-	os "os"
+	"log"
+	"os"
 	"time"
 )
 
@@ -15,7 +15,7 @@ func initialize() *log.Logger {
 	logFileName := fmt.Sprintf("./logs/%v.log", logDate)
 	file, err := os.OpenFile(logFileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
-		log.Fatalf("error opening file: %v", err)
+		return log.New(os.Stdout, "[app] ", log.LstdFlags)
 	}
 
 	return log.New(file, "[app] ", log.LstdFlags)

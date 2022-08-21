@@ -39,13 +39,13 @@ make run
 make deps-stop
 ```
 
-Verificando se o serviço está rodando
+### Verificando se o serviço está rodando
 
 ```bash
 curl -X GET 'http://localhost:8010/ping'
 ```
 
-Metricas (Prometheus)
+### Métricas (Prometheus)
 
 ```bash
 curl -X GET 'http://localhost:8010/metrics'
